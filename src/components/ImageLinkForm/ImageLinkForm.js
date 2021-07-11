@@ -1,7 +1,7 @@
 import React from 'react';
 import './ImageLinkForm.css';
 
-const ImageLinkForm = ({ onSubmit, setImageLink }) => {
+const ImageLinkForm = ({ onSubmit, setImageLink, setBoundingBox }) => {
   return (
     <div>
       <p className="f3">
@@ -16,7 +16,13 @@ const ImageLinkForm = ({ onSubmit, setImageLink }) => {
           <input
             className="f4 pa2 w-70 center"
             type="text"
-            onChange={(event) => setImageLink(event.target.value)}
+            onChange={(event) => {
+              // Set image link to load new image.
+              setImageLink(event.target.value);
+
+              // Clear previous bounding box when loading new image.
+              setBoundingBox({});
+            }}
           />
           <button className="w-30 grow f4 link ph3 pv2 dib black bg-light-yellow">
             Detect

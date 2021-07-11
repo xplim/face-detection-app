@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Particles from 'react-particles-js';
 import './App.css';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
@@ -9,24 +9,49 @@ import Rank from './components/Rank/Rank';
 
 const apiURL = 'http://localhost:4000';
 
-const fetchClarifaiResponse = (imageLink) => {
-  fetch(`${apiURL}/clarifai/face-detection`, {
-    method: 'post',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      imageURL: imageLink,
-    }),
-  })
-    .then((response) => {
-      console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
-    })
-    .catch((err) => {
-      // TODO: Handle error.
-    });
-};
-
 function App() {
   const [imageLink, setImageLink] = useState('');
+  const [boundingBox, setBoundingBox] = useState({});
+
+  const imageRef = useRef();
+
+  const calculateFaceLocation = (data) => {
+    const clarifaiFace =
+      data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = imageRef.current;
+    const height = Number(image.height);
+    const width = Number(image.width);
+
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      rightCol: (1 - clarifaiFace.right_col) * width,
+      topRow: clarifaiFace.top_row * height,
+      bottomRow: (1 - clarifaiFace.bottom_row) * height,
+    };
+  };
+
+  const fetchClarifaiResponse = (imageLink) => {
+    fetch(`${apiURL}/clarifai/face-detection`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imageURL: imageLink,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw new Error('Unable to work with API');
+      })
+      .then((data) => {
+        setBoundingBox(calculateFaceLocation(data));
+      })
+      .catch((err) => {
+        // TODO: Handle error.
+      });
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -55,8 +80,16 @@ function App() {
       <Navigation />
       <Logo />
       <Rank />
-      <ImageLinkForm onSubmit={onSubmit} setImageLink={setImageLink} />
-      <FaceRecognition imageLink={imageLink} />
+      <ImageLinkForm
+        onSubmit={onSubmit}
+        setImageLink={setImageLink}
+        setBoundingBox={setBoundingBox}
+      />
+      <FaceRecognition
+        boundingBox={boundingBox}
+        imageLink={imageLink}
+        imageRef={imageRef}
+      />
     </div>
   );
 }
