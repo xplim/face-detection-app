@@ -19,6 +19,8 @@ function App() {
   const [, setUser] = useState({});
 
   const imageRef = useRef();
+  const registerFormRef = useRef();
+  const signInFormRef = useRef();
 
   const calculateFaceLocation = (data) => {
     const clarifaiFace =
@@ -83,7 +85,12 @@ function App() {
     <RouteContext.Provider value={{ route, routes, setRoute }}>
       <div className="App">
         <Particles className="particles" params={particlesOptions} />
-        <Navigation />
+        <Navigation
+          registerFormRef={registerFormRef}
+          signInFormRef={signInFormRef}
+          setImageLink={setImageLink}
+          setUser={setUser}
+        />
         {route === routes.HOME ? (
           <>
             <Logo />
@@ -100,9 +107,9 @@ function App() {
             />
           </>
         ) : route === routes.SIGN_IN ? (
-          <SignIn />
+          <SignIn signInFormRef={signInFormRef} />
         ) : (
-          <Register setUser={setUser} />
+          <Register setUser={setUser} registerFormRef={registerFormRef} />
         )}
       </div>
     </RouteContext.Provider>

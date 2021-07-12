@@ -1,7 +1,12 @@
 import React, { useContext } from 'react';
 import { RouteContext } from '../../contexts/RouteContext';
 
-const Navigation = () => {
+const Navigation = ({
+  registerFormRef,
+  signInFormRef,
+  setImageLink,
+  setUser,
+}) => {
   const { route, routes, setRoute } = useContext(RouteContext);
 
   if (route === routes.HOME) {
@@ -9,7 +14,11 @@ const Navigation = () => {
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p
           className="f3 link dim black underline pa3 pointer"
-          onClick={() => setRoute(routes.SIGN_IN)}
+          onClick={() => {
+            setImageLink('');
+            setUser({});
+            setRoute(routes.SIGN_IN);
+          }}
         >
           Sign Out
         </p>
@@ -21,13 +30,21 @@ const Navigation = () => {
     <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <p
         className="f3 link dim black underline pa3 pointer"
-        onClick={() => setRoute(routes.SIGN_IN)}
+        onClick={() => {
+          // Depending on the App state, `current` could be undefined.
+          signInFormRef.current?.reset();
+          setRoute(routes.SIGN_IN);
+        }}
       >
         Sign In
       </p>
       <p
         className="f3 link dim black underline pa3 pointer"
-        onClick={() => setRoute(routes.REGISTER)}
+        onClick={() => {
+          // Depending on the App state, `current` could be undefined.
+          registerFormRef.current?.reset();
+          setRoute(routes.REGISTER);
+        }}
       >
         Register
       </p>
