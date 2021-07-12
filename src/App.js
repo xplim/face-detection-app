@@ -16,6 +16,7 @@ function App() {
   const [imageLink, setImageLink] = useState('');
   const [boundingBox, setBoundingBox] = useState({});
   const [route, setRoute] = useState(routes.SIGN_IN);
+  const [, setUser] = useState({});
 
   const imageRef = useRef();
 
@@ -101,7 +102,7 @@ function App() {
         ) : route === routes.SIGN_IN ? (
           <SignIn />
         ) : (
-          <Register />
+          <Register setUser={setUser} />
         )}
       </div>
     </RouteContext.Provider>
