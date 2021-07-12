@@ -1,17 +1,21 @@
 import { useRef, useState } from 'react';
 import Particles from 'react-particles-js';
 import './App.css';
+import { routes, RouteContext } from './contexts/RouteContext';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Logo from './components/Logo/Logo';
 import Navigation from './components/Navigation/Navigation';
 import Rank from './components/Rank/Rank';
+import Register from './components/Register/Register';
+import SignIn from './components/SignIn/SignIn';
 
 const apiURL = 'http://localhost:4000';
 
 function App() {
   const [imageLink, setImageLink] = useState('');
   const [boundingBox, setBoundingBox] = useState({});
+  const [route, setRoute] = useState(routes.SIGN_IN);
 
   const imageRef = useRef();
 
@@ -75,22 +79,32 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Particles className="particles" params={particlesOptions} />
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm
-        onSubmit={onSubmit}
-        setImageLink={setImageLink}
-        setBoundingBox={setBoundingBox}
-      />
-      <FaceRecognition
-        boundingBox={boundingBox}
-        imageLink={imageLink}
-        imageRef={imageRef}
-      />
-    </div>
+    <RouteContext.Provider value={{ route, routes, setRoute }}>
+      <div className="App">
+        <Particles className="particles" params={particlesOptions} />
+        <Navigation />
+        {route === routes.HOME ? (
+          <>
+            <Logo />
+            <Rank />
+            <ImageLinkForm
+              onSubmit={onSubmit}
+              setImageLink={setImageLink}
+              setBoundingBox={setBoundingBox}
+            />
+            <FaceRecognition
+              boundingBox={boundingBox}
+              imageLink={imageLink}
+              imageRef={imageRef}
+            />
+          </>
+        ) : route === routes.SIGN_IN ? (
+          <SignIn />
+        ) : (
+          <Register />
+        )}
+      </div>
+    </RouteContext.Provider>
   );
 }
 
