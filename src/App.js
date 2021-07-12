@@ -16,7 +16,7 @@ function App() {
   const [imageLink, setImageLink] = useState('');
   const [boundingBox, setBoundingBox] = useState({});
   const [route, setRoute] = useState(routes.SIGN_IN);
-  const [, setUser] = useState({});
+  const [user, setUser] = useState({});
 
   const imageRef = useRef();
   const registerFormRef = useRef();
@@ -47,6 +47,19 @@ function App() {
     })
       .then((response) => {
         if (response.ok) {
+          // Increment entries count.
+          fetch(`${apiURL}/image`, {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: user.id,
+            }),
+          })
+            .then((putResponse) => putResponse.json())
+            .then((entries) => {
+              setUser({ ...user, entries });
+            });
+
           return response.json();
         }
 
@@ -94,7 +107,7 @@ function App() {
         {route === routes.HOME ? (
           <>
             <Logo />
-            <Rank />
+            <Rank user={user} />
             <ImageLinkForm
               onSubmit={onSubmit}
               setImageLink={setImageLink}
@@ -107,7 +120,7 @@ function App() {
             />
           </>
         ) : route === routes.SIGN_IN ? (
-          <SignIn signInFormRef={signInFormRef} />
+          <SignIn setUser={setUser} signInFormRef={signInFormRef} />
         ) : (
           <Register setUser={setUser} registerFormRef={registerFormRef} />
         )}

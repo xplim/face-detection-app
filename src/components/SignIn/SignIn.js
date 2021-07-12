@@ -5,7 +5,7 @@ import { RouteContext } from '../../contexts/RouteContext';
 //   https://tachyons.io/components/forms/sign-in/index.html
 //   http://tachyons.io/components/cards/product-card/index.html
 
-const SignIn = ({ signInFormRef }) => {
+const SignIn = ({ setUser, signInFormRef }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -29,8 +29,11 @@ const SignIn = ({ signInFormRef }) => {
 
         throw new Error(`${response.status}: ${response.statusText}`);
       })
-      .then((result) => {
-        setRoute(routes.HOME);
+      .then((user) => {
+        if (user) {
+          setUser(user);
+          setRoute(routes.HOME);
+        }
       })
       .catch((err) => console.error(err.message));
   };
