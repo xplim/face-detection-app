@@ -10,7 +10,7 @@ import Rank from './components/Rank/Rank';
 import Register from './components/Register/Register';
 import SignIn from './components/SignIn/SignIn';
 
-const apiURL = 'http://localhost:4000';
+const apiURL = process.env.REACT_APP_API_URL;
 
 function App() {
   const [imageLink, setImageLink] = useState('');

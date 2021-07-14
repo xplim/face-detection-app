@@ -15,7 +15,7 @@ const Register = ({ setUser, registerFormRef }) => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    fetch('http://localhost:4000/register', {
+    fetch(`${process.env.REACT_APP_API_URL}/register`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
