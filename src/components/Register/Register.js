@@ -5,7 +5,7 @@ import { RouteContext } from '../../contexts/RouteContext';
 //   https://tachyons.io/components/forms/sign-in/index.html
 //   http://tachyons.io/components/cards/product-card/index.html
 
-const Register = ({ setUser, registerFormRef }) => {
+const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -14,6 +14,8 @@ const Register = ({ setUser, registerFormRef }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+
+    setErrorMessage();
 
     fetch(`${process.env.REACT_APP_API_URL}/register`, {
       method: 'post',
@@ -37,7 +39,10 @@ const Register = ({ setUser, registerFormRef }) => {
           setRoute(routes.HOME);
         }
       })
-      .catch((err) => console.error(err.message));
+      .catch((err) => {
+        console.error(err.message);
+        setErrorMessage('Unable to register.');
+      });
   };
 
   return (

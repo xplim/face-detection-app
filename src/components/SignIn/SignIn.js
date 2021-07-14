@@ -5,7 +5,7 @@ import { RouteContext } from '../../contexts/RouteContext';
 //   https://tachyons.io/components/forms/sign-in/index.html
 //   http://tachyons.io/components/cards/product-card/index.html
 
-const SignIn = ({ setUser, signInFormRef }) => {
+const SignIn = ({ setUser, signInFormRef, setErrorMessage }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -13,6 +13,8 @@ const SignIn = ({ setUser, signInFormRef }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+
+    setErrorMessage();
 
     fetch(`${process.env.REACT_APP_API_URL}/signin`, {
       method: 'post',
@@ -35,7 +37,10 @@ const SignIn = ({ setUser, signInFormRef }) => {
           setRoute(routes.HOME);
         }
       })
-      .catch((err) => console.error(err.message));
+      .catch((err) => {
+        console.error(err.message);
+        setErrorMessage('Unable to sign in.');
+      });
   };
 
   return (

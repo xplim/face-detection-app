@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react';
 import Particles from 'react-particles-js';
+import { Button } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+
 import './App.css';
 import { routes, RouteContext } from './contexts/RouteContext';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
@@ -17,6 +20,7 @@ function App() {
   const [boundingBox, setBoundingBox] = useState({});
   const [route, setRoute] = useState(routes.SIGN_IN);
   const [user, setUser] = useState({});
+  const [errorMessage, setErrorMessage] = useState();
 
   const imageRef = useRef();
   const registerFormRef = useRef();
@@ -38,6 +42,8 @@ function App() {
   };
 
   const fetchClarifaiResponse = (imageLink) => {
+    const fetchErrMessage = 'Unable to work with API.';
+
     fetch(`${apiURL}/clarifai/face-detection`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -63,18 +69,17 @@ function App() {
           return response.json();
         }
 
-        throw new Error('Unable to work with API');
+        throw new Error(fetchErrMessage);
       })
       .then((data) => {
         setBoundingBox(calculateFaceLocation(data));
       })
-      .catch((err) => {
-        // TODO: Handle error.
-      });
+      .catch((err) => setErrorMessage(fetchErrMessage));
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
+    setErrorMessage();
     fetchClarifaiResponse(imageLink);
   };
 
@@ -103,7 +108,30 @@ function App() {
           signInFormRef={signInFormRef}
           setImageLink={setImageLink}
           setUser={setUser}
+          setErrorMessage={setErrorMessage}
         />
+        {errorMessage && (
+          <div className="mb4">
+            <Alert
+              icon={false}
+              severity="error"
+              action={
+                <Button
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setErrorMessage();
+                  }}
+                >
+                  <div className="dismissButton">Dismiss</div>
+                </Button>
+              }
+            >
+              <strong>Error:</strong> {errorMessage}
+            </Alert>
+          </div>
+        )}
         {route === routes.HOME ? (
           <>
             <Logo />
@@ -120,9 +148,17 @@ function App() {
             />
           </>
         ) : route === routes.SIGN_IN ? (
-          <SignIn setUser={setUser} signInFormRef={signInFormRef} />
+          <SignIn
+            setUser={setUser}
+            signInFormRef={signInFormRef}
+            setErrorMessage={setErrorMessage}
+          />
         ) : (
-          <Register setUser={setUser} registerFormRef={registerFormRef} />
+          <Register
+            setUser={setUser}
+            registerFormRef={registerFormRef}
+            setErrorMessage={setErrorMessage}
+          />
         )}
       </div>
     </RouteContext.Provider>

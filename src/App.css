@@ -50,3 +50,22 @@
   left: 0;
   z-index: -1;
 }
+
+.MuiAlert-message {
+  font-family: Courier, monospace;
+  font-size: 1.2rem;
+}
+
+.MuiAlert-root {
+  justify-content: center;
+}
+
+.MuiAlert-action {
+  margin-left: 0 !important;
+}
+
+.dismissButton {
+  border: 1px solid rgb(97, 26, 21);
+  border-radius: 5px;
+  padding: 0 0.3rem;
+}

@@ -6,6 +6,7 @@ const Navigation = ({
   signInFormRef,
   setImageLink,
   setUser,
+  setErrorMessage,
 }) => {
   const { route, routes, setRoute } = useContext(RouteContext);
 
@@ -17,6 +18,7 @@ const Navigation = ({
           onClick={() => {
             setImageLink('');
             setUser({});
+            setErrorMessage();
             setRoute(routes.SIGN_IN);
           }}
         >
@@ -33,6 +35,7 @@ const Navigation = ({
         onClick={() => {
           // Depending on the App state, `current` could be undefined.
           signInFormRef.current?.reset();
+          setErrorMessage();
           setRoute(routes.SIGN_IN);
         }}
       >
@@ -43,6 +46,7 @@ const Navigation = ({
         onClick={() => {
           // Depending on the App state, `current` could be undefined.
           registerFormRef.current?.reset();
+          setErrorMessage();
           setRoute(routes.REGISTER);
         }}
       >
