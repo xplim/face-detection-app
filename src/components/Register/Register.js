@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react';
+import { Alert } from '@material-ui/lab';
 import { RouteContext } from '../../contexts/RouteContext';
 
 // Sources:
@@ -46,65 +47,73 @@ const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
   };
 
   return (
-    <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
-      <main className="pa4 black-80">
-        <form
-          className="measure"
-          onSubmit={(event) => onSubmit(event)}
-          ref={registerFormRef}
-        >
-          <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-            <legend className="f1 fw6 ph0 mh0">Register</legend>
-            <div className="mt3">
-              <label className="db fw6 lh-copy f5" htmlFor="name">
-                Name
-              </label>
+    <>
+      <Alert icon={false} severity="warning">
+        <div style={{ whiteSpace: 'pre-line' }}>
+          {`This playground app is not fully secure.
+          Please use mock credentials for registration.`}
+        </div>
+      </Alert>
+      <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
+        <main className="pa4 black-80">
+          <form
+            className="measure"
+            onSubmit={(event) => onSubmit(event)}
+            ref={registerFormRef}
+          >
+            <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
+              <legend className="f1 fw6 ph0 mh0">Register</legend>
+              <div className="mt3">
+                <label className="db fw6 lh-copy f5" htmlFor="name">
+                  Name
+                </label>
+                <input
+                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="text"
+                  name="name"
+                  id="name"
+                  autoComplete="name"
+                  ref={nameRef}
+                />
+              </div>
+              <div className="mt3">
+                <label className="db fw6 lh-copy f5" htmlFor="email-address">
+                  Email
+                </label>
+                <input
+                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="email"
+                  name="email-address"
+                  id="email-address"
+                  autoComplete="email"
+                  ref={emailRef}
+                />
+              </div>
+              <div className="mv3">
+                <label className="db fw6 lh-copy f5" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="password"
+                  name="password"
+                  id="password"
+                  autoComplete="new-password"
+                  ref={passwordRef}
+                />
+              </div>
+            </fieldset>
+            <div className="">
               <input
-                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                type="text"
-                name="name"
-                id="name"
-                autoComplete="name"
-                ref={nameRef}
+                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
+                type="submit"
+                value="Submit"
               />
             </div>
-            <div className="mt3">
-              <label className="db fw6 lh-copy f5" htmlFor="email-address">
-                Email
-              </label>
-              <input
-                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                type="email"
-                name="email-address"
-                id="email-address"
-                autoComplete="email"
-                ref={emailRef}
-              />
-            </div>
-            <div className="mv3">
-              <label className="db fw6 lh-copy f5" htmlFor="password">
-                Password
-              </label>
-              <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                type="password"
-                name="password"
-                id="password"
-                autoComplete="new-password"
-                ref={passwordRef}
-              />
-            </div>
-          </fieldset>
-          <div className="">
-            <input
-              className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
-              type="submit"
-              value="Submit"
-            />
-          </div>
-        </form>
-      </main>
-    </article>
+          </form>
+        </main>
+      </article>
+    </>
   );
 };
 
