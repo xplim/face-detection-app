@@ -21,6 +21,7 @@ function App() {
   const [route, setRoute] = useState(routes.SIGN_IN);
   const [user, setUser] = useState({});
   const [errorMessage, setErrorMessage] = useState();
+  const [detectStatus, setDetectStatus] = useState();
 
   const imageRef = useRef();
   const registerFormRef = useRef();
@@ -74,13 +75,17 @@ function App() {
       .then((data) => {
         setBoundingBox(calculateFaceLocation(data));
       })
-      .catch((err) => setErrorMessage(fetchErrMessage));
+      .catch((err) => setErrorMessage(fetchErrMessage))
+      .finally(() => setDetectStatus());
   };
 
-  const onSubmit = (event) => {
+  const onSubmitImageLink = (event) => {
     event.preventDefault();
-    setErrorMessage();
-    fetchClarifaiResponse(imageLink);
+    if (!detectStatus) {
+      setDetectStatus('Processing...');
+      setErrorMessage();
+      fetchClarifaiResponse(imageLink);
+    }
   };
 
   const particlesOptions = {
@@ -137,9 +142,10 @@ function App() {
             <Logo />
             <Rank user={user} />
             <ImageLinkForm
-              onSubmit={onSubmit}
+              onSubmit={onSubmitImageLink}
               setImageLink={setImageLink}
               setBoundingBox={setBoundingBox}
+              detectStatus={detectStatus}
             />
             <FaceRecognition
               boundingBox={boundingBox}

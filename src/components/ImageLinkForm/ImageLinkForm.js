@@ -1,7 +1,12 @@
 import React from 'react';
 import './ImageLinkForm.css';
 
-const ImageLinkForm = ({ onSubmit, setImageLink, setBoundingBox }) => {
+const ImageLinkForm = ({
+  onSubmit,
+  setImageLink,
+  setBoundingBox,
+  detectStatus,
+}) => {
   return (
     <div>
       <p className="f3">
@@ -24,8 +29,13 @@ const ImageLinkForm = ({ onSubmit, setImageLink, setBoundingBox }) => {
               setBoundingBox({});
             }}
           />
-          <button className="w-30 grow f4 link ph3 pv2 dib black bg-light-yellow">
-            Detect
+          <button
+            className={`w-30 f4 link ph3 pv2 dib black ${
+              detectStatus ? 'bg-light-gray' : 'bg-light-yellow grow'
+            }`}
+            disabled={detectStatus?.length}
+          >
+            {detectStatus ?? 'Detect'}
           </button>
         </form>
       </div>

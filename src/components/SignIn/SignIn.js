@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { RouteContext } from '../../contexts/RouteContext';
 
 // Sources:
@@ -6,6 +6,8 @@ import { RouteContext } from '../../contexts/RouteContext';
 //   http://tachyons.io/components/cards/product-card/index.html
 
 const SignIn = ({ setUser, signInFormRef, setErrorMessage }) => {
+  const [status, setStatus] = useState();
+
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -14,33 +16,39 @@ const SignIn = ({ setUser, signInFormRef, setErrorMessage }) => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    setErrorMessage();
+    if (!status) {
+      setStatus('Signing In...');
+      setErrorMessage();
 
-    fetch(`${process.env.REACT_APP_API_URL}/signin`, {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
+      fetch(`${process.env.REACT_APP_API_URL}/signin`, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
 
-        throw new Error(`${response.status}: ${response.statusText}`);
-      })
-      .then((user) => {
-        if (user) {
-          setUser(user);
-          setRoute(routes.HOME);
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-        setErrorMessage('Unable to sign in.');
-      });
+          throw new Error(`${response.status}: ${response.statusText}`);
+        })
+        .then((user) => {
+          if (user) {
+            setUser(user);
+            setRoute(routes.HOME);
+          }
+        })
+        .catch((err) => {
+          console.error(err.message);
+          setErrorMessage('Unable to sign in.');
+        })
+        .finally(() => {
+          setStatus();
+        });
+    }
   };
 
   return (
@@ -82,9 +90,12 @@ const SignIn = ({ setUser, signInFormRef, setErrorMessage }) => {
           </fieldset>
           <div className="">
             <input
-              className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
+              className={`b ph3 pv2 input-reset ba b--black bg-transparent f5 dib ${
+                status ? '' : 'grow pointer'
+              }`}
               type="submit"
-              value="Submit"
+              value={status ?? 'Submit'}
+              disabled={status?.length}
             />
           </div>
           <div className="lh-copy mt3">

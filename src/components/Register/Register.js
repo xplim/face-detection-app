@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Alert } from '@material-ui/lab';
 import { RouteContext } from '../../contexts/RouteContext';
 
@@ -7,6 +7,8 @@ import { RouteContext } from '../../contexts/RouteContext';
 //   http://tachyons.io/components/cards/product-card/index.html
 
 const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
+  const [status, setStatus] = useState();
+
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -16,34 +18,40 @@ const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    setErrorMessage();
+    if (!status) {
+      setStatus('Registering...');
+      setErrorMessage();
 
-    fetch(`${process.env.REACT_APP_API_URL}/register`, {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: nameRef.current.value,
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
+      fetch(`${process.env.REACT_APP_API_URL}/register`, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
 
-        throw new Error(`${response.status}: ${response.statusText}`);
-      })
-      .then((user) => {
-        if (user) {
-          setUser(user);
-          setRoute(routes.HOME);
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-        setErrorMessage('Unable to register.');
-      });
+          throw new Error(`${response.status}: ${response.statusText}`);
+        })
+        .then((user) => {
+          if (user) {
+            setUser(user);
+            setRoute(routes.HOME);
+          }
+        })
+        .catch((err) => {
+          console.error(err.message);
+          setErrorMessage('Unable to register.');
+        })
+        .finally(() => {
+          setStatus();
+        });
+    }
   };
 
   return (
@@ -105,9 +113,12 @@ const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
             </fieldset>
             <div className="">
               <input
-                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
+                className={`b ph3 pv2 input-reset ba b--black bg-transparent f5 dib ${
+                  status ? '' : 'grow pointer'
+                }`}
                 type="submit"
-                value="Submit"
+                value={status ?? 'Submit'}
+                disabled={status?.length}
               />
             </div>
           </form>
