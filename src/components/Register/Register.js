@@ -57,7 +57,7 @@ const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
   return (
     <>
       <Alert icon={false} severity="warning">
-        <div style={{ whiteSpace: 'pre-line' }}>
+        <div className="line-break">
           {`This playground app is not fully secure.
           Please use mock credentials for registration.`}
         </div>

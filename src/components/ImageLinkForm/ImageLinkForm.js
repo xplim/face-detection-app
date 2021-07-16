@@ -9,7 +9,7 @@ const ImageLinkForm = ({
 }) => {
   return (
     <div>
-      <p className="f3" style={{ whiteSpace: 'pre-line' }}>
+      <p className="f3 line-break">
         {`This Magic Brain will detect faces in your pictures.
           Give it a try.`}
       </p>
