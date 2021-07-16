@@ -82,9 +82,13 @@ function App() {
   const onSubmitImageLink = (event) => {
     event.preventDefault();
     if (!detectStatus) {
-      setDetectStatus('Processing...');
-      setErrorMessage();
-      fetchClarifaiResponse(imageLink);
+      if (!imageLink?.length) {
+        setErrorMessage('Image URL required.');
+      } else {
+        setDetectStatus('Processing...');
+        setErrorMessage();
+        fetchClarifaiResponse(imageLink);
+      }
     }
   };
 
