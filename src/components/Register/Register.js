@@ -58,8 +58,9 @@ const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
     <>
       <Alert icon={false} severity="warning">
         <div className="line-break">
-          {`This playground app is not fully secure.
-          Please use mock credentials for registration.`}
+          This playground app is <strong>not</strong> fully secure.
+          <br />
+          Please use mock credentials for registration.
         </div>
       </Alert>
       <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -70,7 +71,9 @@ const Register = ({ setUser, registerFormRef, setErrorMessage }) => {
             ref={registerFormRef}
           >
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-              <legend className="f1 fw6 ph0 mh0">Register</legend>
+              <legend className="f2 fw6 ph0 mh0" style={{ width: '100%' }}>
+                Register
+              </legend>
               <div className="mt3">
                 <label className="db fw6 lh-copy f5" htmlFor="name">
                   Name

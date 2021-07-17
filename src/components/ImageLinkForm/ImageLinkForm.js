@@ -8,8 +8,8 @@ const ImageLinkForm = ({
   detectStatus,
 }) => {
   return (
-    <div>
-      <p className="f3 line-break">
+    <div className="main-section">
+      <p className="f4 line-break">
         {`This Magic Brain will detect faces in your pictures.
           Give it a try.`}
       </p>
@@ -20,8 +20,9 @@ const ImageLinkForm = ({
           onSubmit={(event) => onSubmit(event)}
         >
           <input
-            className="f4 pa2 w-70 center"
+            className="f6 pa2 w-70 center"
             type="text"
+            placeholder="Enter image URL."
             onChange={(event) => {
               // Set image link to load new image.
               setImageLink(event.target.value);
@@ -31,12 +32,12 @@ const ImageLinkForm = ({
             }}
           />
           <button
-            className={`w-30 f4 link ph3 pv2 dib black ${
+            className={`w-30 f6 link ph3 pv2 dib black ${
               detectStatus ? 'bg-light-gray' : 'bg-light-yellow grow'
             }`}
-            disabled={detectStatus?.length}
+            disabled={detectStatus}
           >
-            {detectStatus ?? 'Detect'}
+            Detect
           </button>
         </form>
       </div>

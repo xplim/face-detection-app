@@ -13,10 +13,10 @@
     #12d8fa,
     #1fa2ff
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  height: 150px;
-  width: 150px;
+  height: 100px;
+  width: 100px;
 }
 
 .logo-img {
-  padding-top: 12px;
+  padding-top: 3px;
 }

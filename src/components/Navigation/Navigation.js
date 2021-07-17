@@ -14,7 +14,7 @@ const Navigation = ({
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <p
-          className="f3 link dim black underline pa3 pointer"
+          className="f4 mt1 mb1 link dim black underline pa3 pointer"
           onClick={() => {
             setImageLink('');
             setUser({});
@@ -31,7 +31,7 @@ const Navigation = ({
   return (
     <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <p
-        className="f3 link dim black underline pa3 pointer"
+        className="f4 link dim black underline pa3 pointer"
         onClick={() => {
           // Depending on the App state, `current` could be undefined.
           signInFormRef.current?.reset();
@@ -42,7 +42,7 @@ const Navigation = ({
         Sign In
       </p>
       <p
-        className="f3 link dim black underline pa3 pointer"
+        className="f4 link dim black underline pa3 pointer"
         onClick={() => {
           // Depending on the App state, `current` could be undefined.
           registerFormRef.current?.reset();

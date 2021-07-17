@@ -53,7 +53,12 @@
 
 .MuiAlert-message {
   font-family: Courier, monospace;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  width: 90%;
+}
+
+.MuiAlert-message strong {
+  text-transform: uppercase;
 }
 
 .MuiAlert-root {
@@ -76,4 +81,9 @@ button:disabled {
 
 .line-break {
   white-space: pre-line;
+}
+
+.main-section {
+  width: 90%;
+  margin: auto;
 }

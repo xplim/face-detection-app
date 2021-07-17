@@ -85,7 +85,7 @@ function App() {
       if (!imageLink?.length) {
         setErrorMessage('Image URL required.');
       } else {
-        setDetectStatus('Processing...');
+        setDetectStatus(true);
         setErrorMessage();
         fetchClarifaiResponse(imageLink);
       }

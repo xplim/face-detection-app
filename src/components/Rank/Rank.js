@@ -4,9 +4,9 @@ const Rank = ({ user }) => {
   const { name, entries } = user;
 
   return (
-    <div>
-      <div className="dark-pink f3">{name}, your current entry count is...</div>
-      <div className="dark-pink f1">{entries}</div>
+    <div className="main-section">
+      <div className="dark-pink f4">{name}, your current entry count is...</div>
+      <div className="dark-pink f3">{entries}</div>
     </div>
   );
 };

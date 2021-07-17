@@ -60,7 +60,9 @@ const SignIn = ({ setUser, signInFormRef, setErrorMessage }) => {
           ref={signInFormRef}
         >
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-            <legend className="f1 fw6 ph0 mh0">Sign In</legend>
+            <legend className="f2 fw6 ph0 mh0" style={{ width: '100%' }}>
+              Sign In
+            </legend>
             <div className="mt3">
               <label className="db fw6 lh-copy f5" htmlFor="email-address">
                 Email
